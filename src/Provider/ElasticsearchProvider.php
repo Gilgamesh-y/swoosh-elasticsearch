@@ -2,14 +2,15 @@
 
 namespace Src\Elasticsearch\Provider;
 
+use Src\Elasticsearch\Client;
 use Src\Core\AbstractProvider;
 
-class DispatchServiceProvider extends AbstractProvider
+class ElasticsearchProvider extends AbstractProvider
 {
     public function register()
     {
         $this->app->set('elasticsearch', function () {
-            return new DispatcherServer($this->app);
+            return new Client($this->app);
         });
     }
 }
