@@ -10,7 +10,9 @@ class ElasticsearchProvider extends AbstractProvider
     public function register()
     {
         $this->app->set('elasticsearch', function () {
-            return new Client($this->app);
+            $config = $this->app->get('config')->get('elasticsearch') ?? [];
+
+            return new Client($config);
         });
     }
 }
