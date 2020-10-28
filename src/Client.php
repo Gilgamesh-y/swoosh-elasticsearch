@@ -38,12 +38,12 @@ class Client
      *
      * @return array
      */
-    public function index($index, $type, $source, $id = null)
+    public function index($index, $type, $doc, $id = null)
     {
         $params = [
             'index' => $index,
             'type' => $type,
-            'body' => $source
+            'body' => $doc
         ];
         if (is_null($id)) {
             $params['id'] = App::get('snowflake')->get_id();
@@ -59,8 +59,8 @@ class Client
             [
                 'index' => 'test_index_2',
                 'type' => 'test',
-                'source' => [
-                    'name' => 'wrath1'w
+                'doc' => [
+                    'name' => 'wrath1'
                 ]
             ]
         ]
@@ -71,7 +71,7 @@ class Client
     {
         $params = [];
         foreach ($arr as $val) {
-            if (!isset($val['index']) || !isset($val['type']) || !isset($val['source'])) {
+            if (!isset($val['index']) || !isset($val['type']) || !isset($val['doc'])) {
                 throw new \Exception('参数错误', -1);
             }
             $params['body'][] = [
@@ -81,7 +81,7 @@ class Client
                     '_id' => App::get('snowflake')->get_id()
                 ]
             ];
-            $params['body'][] = $val['source'];
+            $params['body'][] = $val['doc'];
         }
 
         return $this->client->bulk($params);
@@ -112,17 +112,17 @@ class Client
      * @param mixed $index
      * @param mixed $type
      * @param mixed $id
-     * @param array $source ['field_name' => 'value']
+     * @param array $doc ['field_name' => 'value']
      * @return array
      */
-    public function update($index, $type, $id, $source)
+    public function update($index, $type, $id, $doc)
     {
         $params = [
             'index' => $index,
             'type' => $type,
             'id' => $id,
             'body' => [
-                'doc' => $source
+                'doc' => $doc
             ]
         ];
         
